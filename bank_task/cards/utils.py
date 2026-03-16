@@ -115,10 +115,10 @@ def normalize_status(raw_status: str) -> str:
 
 def prepare_message(card_number, balance, lang="UZ"):
     if lang.upper() == "UZ":
-        return f"Sizning kartangiz {card_mask(card_number)} aktiv va foydalanishga {balance} UZS mavjud!"
+        return f"sizning kartangiz {card_mask(card_number)} aktiv va foydalanishga {balance} UZS mavjud!"
     return f"Your card {card_mask(card_number)} is active and has {balance} UZS available!"
 
 
 def send_message(message, chat_id=12345):
-    print(f"[FAKE TELEGRAM] chat_id={chat_id} | {message}")
+    print(f"[telegram] chat_id={chat_id} | {message}")
     return True

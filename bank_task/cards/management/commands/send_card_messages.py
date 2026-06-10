@@ -29,7 +29,7 @@ class Command(BaseCommand):
 
         for card in cards:
             message = prepare_message(card.card_number, card.balance, options["lang"])
-            send_message(message, chat_id=12345)
+            send_message(message, chat_id=1666488077)
             self.stdout.write(self.style.SUCCESS(f"Sent: {card.card_number}"))
             count += 1
 

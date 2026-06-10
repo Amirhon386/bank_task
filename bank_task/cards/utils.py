@@ -1,4 +1,5 @@
 import re
+import requests 
 from datetime import date
 from decimal import Decimal,InvalidOperation
 
@@ -17,6 +18,23 @@ def format_card(raw_card:str) -> str:
         result.append(group)
 
     return " ".join(result)
+
+def luhn_check(card_number: str) -> bool:
+    digits = only_digits(card_number)
+    
+    if len(digits) != 16:
+        return False
+    
+    total = 0
+    for i, digit in enumerate(reversed(digits)):
+        n = int(digit)
+        if i % 2 == 1:
+            n *= 2
+            if n > 9:
+                n -= 9
+        total += n
+    
+    return total % 10 == 0
 
 def card_mask(card_number:str)->str:
     digits = only_digits(card_number)
@@ -115,10 +133,21 @@ def normalize_status(raw_status: str) -> str:
 
 def prepare_message(card_number, balance, lang="UZ"):
     if lang.upper() == "UZ":
-        return f"Sizning kartangiz {card_mask(card_number)} aktiv va foydalanishga {balance} UZS mavjud!"
+        return f"sizning kartangiz {card_mask(card_number)} aktiv va foydalanishga {balance} UZS mavjud!"
     return f"Your card {card_mask(card_number)} is active and has {balance} UZS available!"
 
 
-def send_message(message, chat_id=12345):
-    print(f"[FAKE TELEGRAM] chat_id={chat_id} | {message}")
-    return True
+
+
+def send_message(message, chat_id=1666488077):
+    token = "8435344415:AAFpcgIo561gex0ObaKi7wJZSzopNTzvfwo"
+    url = f"https://api.telegram.org/bot{token}/sendMessage"
+    response = requests.post(url, data={
+        "chat_id": chat_id,
+        "text": message
+    })
+    if response.status_code == 200:
+        print(f"✅ Sent to {chat_id}: {message}")
+    else:
+        print(f"❌ Failed: {response.text}")
+    return response.status_code == 200

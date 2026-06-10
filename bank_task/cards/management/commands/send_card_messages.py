@@ -14,22 +14,22 @@ class Command(BaseCommand):
         parser.add_argument("--lang", type=str, default="UZ")
 
     def handle(self, *args, **options):
-        qs = Card.objects.all()
+        cards = Card.objects.all()
 
         if options["status"]:
-            qs = qs.filter(status=options["status"])
+            cards = cards.filter(status=options["status"])
 
         if options["card_number"]:
-            qs = qs.filter(card_number__icontains=options["card_number"])
+            cards = cards.filter(card_number__icontains=options["card_number"])
 
         if options["phone"]:
-            qs = qs.filter(phone__icontains=options["phone"])
+            cards = cards.filter(phone__icontains=options["phone"])
 
         count = 0
 
-        for card in qs:
+        for card in cards:
             message = prepare_message(card.card_number, card.balance, options["lang"])
-            send_message(message, chat_id=12345)
+            send_message(message, chat_id=1666488077)
             self.stdout.write(self.style.SUCCESS(f"Sent: {card.card_number}"))
             count += 1
 
